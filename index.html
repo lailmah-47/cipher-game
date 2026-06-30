@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cipher Guessing Game – Learn Caesar Cipher encryption by decoding secret words and scoring points in this interactive cryptography game." />
+  <title>CipherQuest – Caesar Cipher Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== ANIMATED BACKGROUND PARTICLES ===== -->
+  <div class="bg-particles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== MAIN WRAPPER ===== -->
+  <div class="app-wrapper">
+
+    <!-- ========== HEADER ========== -->
+    <header class="site-header">
+      <div class="logo-icon" aria-hidden="true">🔐</div>
+      <h1 class="site-title">CipherQuest</h1>
+      <p class="site-subtitle">Caesar Cipher Guessing Game</p>
+    </header>
+
+    <!-- ========== SCREEN: HOME ========== -->
+    <section id="screen-home" class="screen active">
+      <div class="card home-card">
+
+        <div class="cipher-demo" aria-label="Encryption demonstration">
+          <div class="demo-row">
+            <span class="demo-label">Original</span>
+            <div class="demo-letters" id="demo-original">
+              <span>H</span><span>E</span><span>L</span><span>L</span><span>O</span>
+            </div>
+          </div>
+          <div class="demo-arrow">↓ Shift +3 ↓</div>
+          <div class="demo-row">
+            <span class="demo-label">Encrypted</span>
+            <div class="demo-letters encrypted" id="demo-encrypted">
+              <span>K</span><span>H</span><span>O</span><span>O</span><span>R</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="home-info">
+          <h2>How It Works</h2>
+          <ul class="info-list">
+            <li><span class="icon">🎯</span> A secret word is picked randomly</li>
+            <li><span class="icon">🔒</span> It is encrypted using Caesar Cipher (shift +3)</li>
+            <li><span class="icon">💡</span> You get a hint to help you guess</li>
+            <li><span class="icon">⭐</span> Correct = +10 pts &nbsp;|&nbsp; Wrong = −5 pts</li>
+          </ul>
+        </div>
+
+        <div class="home-stats">
+          <div class="stat-box">
+            <span class="stat-num">5</span>
+            <span class="stat-label">Rounds</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">+10</span>
+            <span class="stat-label">Correct</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">−5</span>
+            <span class="stat-label">Wrong</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num">50</span>
+            <span class="stat-label">Max Score</span>
+          </div>
+        </div>
+
+        <button id="btn-start" class="btn btn-primary pulse-btn" onclick="startGame()">
+          <span class="btn-icon">▶</span> Start Game
+        </button>
+
+        <button id="btn-learn" class="btn btn-ghost" onclick="showLearnScreen()">
+          📖 How Caesar Cipher Works
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ========== SCREEN: LEARN ========== -->
+    <section id="screen-learn" class="screen">
+      <div class="card learn-card">
+        <button class="back-btn" onclick="showHomeScreen()">← Back</button>
+        <h2 class="card-title">📚 Caesar Cipher – How It Works</h2>
+
+        <div class="formula-box">
+          <p class="formula-title">Encryption Formula</p>
+          <p class="formula">E(x) = (x + n) mod 26</p>
+          <p class="formula-sub">where x = letter position (A=0…Z=25), n = shift value</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h3>Convert to Number</h3>
+            <p>Use <code>ord(letter) − 65</code> to get position (A=0, B=1 … Z=25)</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h3>Add Shift Value</h3>
+            <p>Add the shift <em>n</em>. Example: A + 3 → position 3</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h3>Apply Modulo 26</h3>
+            <p>Use <code>mod 26</code> so Z wraps around back to A</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <h3>Convert Back</h3>
+            <p>Use <code>chr(position + 65)</code> to get the encrypted letter</p>
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>Worked Example — "HELLO" with shift 3</h3>
+          <table class="cipher-table">
+            <thead>
+              <tr><th>Letter</th><th>ASCII</th><th>Position</th><th>+Shift</th><th>mod 26</th><th>Encrypted</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>H</td><td>72</td><td>7</td><td>10</td><td>10</td><td class="enc">K</td></tr>
+              <tr><td>E</td><td>69</td><td>4</td><td>7</td><td>7</td><td class="enc">H</td></tr>
+              <tr><td>L</td><td>76</td><td>11</td><td>14</td><td>14</td><td class="enc">O</td></tr>
+              <tr><td>L</td><td>76</td><td>11</td><td>14</td><td>14</td><td class="enc">O</td></tr>
+              <tr><td>O</td><td>79</td><td>14</td><td>17</td><td>17</td><td class="enc">R</td></tr>
+            </tbody>
+          </table>
+          <p class="example-result">HELLO → <strong>KHOOR</strong></p>
+        </div>
+
+        <!-- Interactive Encoder -->
+        <div class="interactive-box">
+          <h3>🔬 Try It Yourself</h3>
+          <div class="try-row">
+            <input id="try-input" type="text" placeholder="Type any word..." maxlength="12" oninput="tryEncode()" />
+            <div class="shift-control">
+              <label for="try-shift">Shift:</label>
+              <input id="try-shift" type="number" value="3" min="1" max="25" oninput="tryEncode()" />
+            </div>
+          </div>
+          <div class="try-result" id="try-result">
+            <span class="try-label">Encrypted:</span>
+            <span class="try-output" id="try-output">—</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== SCREEN: GAME ========== -->
+    <section id="screen-game" class="screen">
+      <div class="card game-card">
+
+        <!-- Top bar -->
+        <div class="game-topbar">
+          <div class="topbar-item">
+            <span class="topbar-label">Round</span>
+            <span class="topbar-val" id="round-display">1 / 5</span>
+          </div>
+          <div class="topbar-item score-item">
+            <span class="topbar-label">Score</span>
+            <span class="topbar-val score-val" id="score-display">0</span>
+          </div>
+          <div class="topbar-item">
+            <span class="topbar-label">Shift</span>
+            <span class="topbar-val">3</span>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-track" role="progressbar" aria-label="Game progress">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <!-- Encrypted word display -->
+        <div class="cipher-section">
+          <p class="cipher-label">🔒 Encrypted Word</p>
+          <div class="cipher-word" id="cipher-word-display">
+            <!-- Letters rendered by JS -->
+          </div>
+          <p class="shift-info">Each letter has been shifted by <strong>3</strong> positions</p>
+        </div>
+
+        <!-- Hint -->
+        <div class="hint-section">
+          <button id="btn-hint" class="hint-toggle" onclick="toggleHint()">
+            💡 Show Hint
+          </button>
+          <div class="hint-box hidden" id="hint-box">
+            <span class="hint-icon">🗝️</span>
+            <span id="hint-text"></span>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="guess-section">
+          <label class="guess-label" for="guess-input">Your Guess:</label>
+          <div class="input-row">
+            <input
+              id="guess-input"
+              type="text"
+              class="guess-input"
+              placeholder="Type the original word…"
+              maxlength="15"
+              autocomplete="off"
+              spellcheck="false"
+              onkeydown="handleEnter(event)"
+            />
+            <button id="btn-submit" class="btn btn-submit" onclick="submitGuess()">
+              Submit →
+            </button>
+          </div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="feedback-box hidden" id="feedback-box">
+          <div class="feedback-icon" id="feedback-icon"></div>
+          <div class="feedback-text" id="feedback-text"></div>
+          <div class="feedback-sub" id="feedback-sub"></div>
+          <button id="btn-next" class="btn btn-next" onclick="nextRound()">
+            Next Round →
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========== SCREEN: RESULT ========== -->
+    <section id="screen-result" class="screen">
+      <div class="card result-card">
+        <div class="result-emoji" id="result-emoji">🏆</div>
+        <h2 class="result-title" id="result-title">Game Over!</h2>
+        <div class="result-score-ring">
+          <svg viewBox="0 0 120 120" class="ring-svg">
+            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="50"
+              stroke-dasharray="314" stroke-dashoffset="314"/>
+          </svg>
+          <div class="ring-text">
+            <span class="ring-score" id="ring-score">0</span>
+            <span class="ring-max">/ 50</span>
+          </div>
+        </div>
+        <p class="result-grade" id="result-grade">Keep Practicing!</p>
+        <div class="result-breakdown" id="result-breakdown"></div>
+        <div class="result-actions">
+          <button class="btn btn-primary" onclick="startGame()">🔄 Play Again</button>
+          <button class="btn btn-ghost" onclick="showHomeScreen()">🏠 Home</button>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- end app-wrapper -->
+
+  <!-- ===== CONFETTI CANVAS ===== -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
